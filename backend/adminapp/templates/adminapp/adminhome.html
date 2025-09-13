@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Movies</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; display: flex; }
+    .sidebar { width: 200px; background: #f4f4f4; height: 100vh; padding: 20px; box-sizing: border-box; border-left: 1px solid #ccc; }
+    .sidebar a { display: block; margin: 10px 0; text-decoration: none; color: #000; }
+    .main { flex: 1; padding: 20px; }
+    .topbar { margin-bottom: 20px; }
+    .topbar input[type="text"] { width: 300px; padding: 5px; }
+    .table-container { max-height: 300px; overflow-y: auto; border: 1px solid #ccc; }
+    table { width: 100%; border-collapse: collapse; }
+    table th, table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    .actions button { margin-right: 5px; }
+    .add-btn { margin: 10px 0; padding: 5px 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="main">
+    <div class="topbar">
+    <input type="text" id="searchBox" placeholder="Search...">
+    </div>
+    <script>
+      document.getElementById("searchBox").addEventListener("keyup", function() {
+      let filter = this.value.toLowerCase();
+      let rows = document.querySelectorAll("tbody tr");
+  
+      rows.forEach(row => {
+      let title = row.cells[0].innerText.toLowerCase();
+      row.style.display = title.includes(filter) ? "" : "none";
+      });
+      });
+    </script>
+    
+    <a href="{% url 'admaddmovie' %}">
+      <button class="add-btn">+ Add Movie</button>
+    </a>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Movie</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for movie in movies %}
+          <tr>
+            <td>{{ movie.title }}</td>
+            <td class="actions">
+              <a href="{% url 'admmovie' movie.id %}"><button>View</button></a>
+              <a href="{% url 'admeditmovie' movie.id %}"><button>Edit</button></a>
+              <a href="{% url 'admdeletemovie' movie.id %}" onclick="return confirm('Are you sure?')"><button>Delete</button></a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3">No movies available.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <a href="{% url 'admchangepass' %}">Change Password</a>
+    <a href="{% url 'admlistuser' %}">List Users</a>
+    <a href="{% url 'admreport' %}">Reports</a>
+    <a href="{% url 'admlogout' %}" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
+  </div>
+
+</body>
+</html>

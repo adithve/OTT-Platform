@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ user.name }} - Watch History</title>
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>Watch History for {{ user.name }}</h1>
+  <p>Email: {{ user.email }}</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Movie Title</th>
+        <th>Watched At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in watch_history %}
+      <tr>
+        <td>{{ record.movie.title }}</td>
+        <td>{{ record.watched_at }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="2">No watch history available</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <br>
+  <a href="{% url 'admlistuser' %}">
+      <button>Back to User-List </button>
+    </a>
+</body>
+</html>
